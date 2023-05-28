@@ -12,3 +12,8 @@ export interface ResponseBody<T> {
   statusCode: number
   success?: boolean
 }
+
+export interface PostParams {
+  title: string,
+  content: string
+}
