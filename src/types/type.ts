@@ -12,3 +12,9 @@ export interface ResponseBody<T> {
   statusCode: number
   success?: boolean
 }
+
+export enum Role {
+  GUEST = 'UNAUTHENTICATED',
+  USER = 'AUTHENTICATED',
+  ADMIN = 'SUPER_ADMIN',
+}

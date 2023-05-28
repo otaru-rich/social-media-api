@@ -6,7 +6,7 @@ export const sendResponse = ({
   data,
   message,
   statusCode = 200
-}: ResponseParams) => {
+}: ResponseParams): any => {
   res.status(statusCode).json({
     success: statusCode < 400,
     message,
