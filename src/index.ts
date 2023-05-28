@@ -13,7 +13,7 @@ const app = express()
 app.use(express.json())
 
 // connect DB
-await connectDB()
+connectDB()
 
 // load routes
 loadRoutes(app)
