@@ -1,5 +1,5 @@
-import { type Response } from 'express'
-import { type ResponseBody, type ResponseParams } from '../types/type'
+import { Response } from 'express'
+import { ResponseBody, ResponseParams } from '../types/type'
 
 export const sendResponse = ({
   res,

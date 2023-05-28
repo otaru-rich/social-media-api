@@ -14,6 +14,11 @@ export interface ResponseBody<T> {
 }
 
 export interface PostParams {
-  title: string,
-  content: string
+  title: string;
+  content: string;
+  userId: string;
+}
+
+export interface UserId {
+  userId: string
 }
