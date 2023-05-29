@@ -3,8 +3,8 @@ import { getUserPosts, createPost, updatePost, deletePost} from '../../controlle
 
 const router = express.Router()
 
+router.post('/', createPost)
 router.get('/:userId', getUserPosts)
-router.post('/create', createPost)
 router.patch('/:postId', updatePost)
 router.delete('/:postId', deletePost)
 

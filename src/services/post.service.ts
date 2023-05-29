@@ -1,6 +1,6 @@
 import Post from '../models/post.model'
 
-export const getPostById = (postId: string) => Post.findById(postId);
+export const getPostById = (id: string) => Post.findById(id);
 export const getPostsByUserId = (userId: string) => Post.find({ user: userId });
 export const getPostsByTitle = (title: string) => Post.find({title: title});
 export const create = (values:  Record<string, any>) => new Post(values)
