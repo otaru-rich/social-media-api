@@ -22,3 +22,9 @@ export interface PostParams {
 export interface UserId {
   userId: string
 }
+
+export enum Role {
+  GUEST = 'UNAUTHENTICATED',
+  USER = 'AUTHENTICATED',
+  ADMIN = 'SUPER_ADMIN',
+}
