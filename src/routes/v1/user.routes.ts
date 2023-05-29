@@ -5,7 +5,7 @@ import { Role } from '../../types/type'
 
 const router = express.Router()
 
-router.post('/register', authorize[Role.GUEST], registerUser)
+router.post('/register', authorize(Role.GUEST), registerUser)
 router.post('/login', loginUser)
 
 export default router
