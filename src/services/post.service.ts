@@ -1,6 +1,6 @@
 import Post from '../models/post.model'
-import { UserId, PostParams } from '../types/type';
 
-export const getPostsByUserId = ({ userId }: UserId) => Post.find({ user: userId });
-export const create = (values: PostParams) => new Post(values)
+export const getPostsByUserId = (userId: string) => Post.find({ user: userId });
+export const create = (values:  Record<string, any>) => new Post(values)
     .save().then((post) => post.toObject());
+export const deletePostById = (postId: string) => Post.findByIdAndDelete({_id: postId});

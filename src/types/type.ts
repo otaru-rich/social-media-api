@@ -13,16 +13,6 @@ export interface ResponseBody<T> {
   success?: boolean
 }
 
-export interface PostParams {
-  title: string;
-  content: string;
-  userId: string;
-}
-
-export interface UserId {
-  userId: string
-}
-
 export enum Role {
   GUEST = 'UNAUTHENTICATED',
   USER = 'AUTHENTICATED',

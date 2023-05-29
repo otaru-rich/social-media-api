@@ -2,30 +2,59 @@ import { Request, Response } from 'express';
 import * as PostService from '../services/post.service';
 import { sendResponse } from '../utils/response';
 
-export const createPosts = async (req: Request, res: Response) => {
+export const createPost = async (req: Request, res: Response) => {
   try {
     const { userId, title, content } = req.body;
 
+    //Check if payload is valid
+    if (!userId || !title || !content) {
+      sendResponse({res: res, message: 'Bad request: all parameters are required', statusCode: 400});
+    }
+
     // // Create a new post
-    const newPost = await PostService.create({ title, content, userId });
+    const newPost = await PostService.create({ title: title, content: content, user: userId });
 
     sendResponse({res: res, data: newPost, message: 'Post created successfully', statusCode: 201});
   } catch (error) {
     console.error(error);
-    sendResponse({res: res, data: {}, message: 'Internal server error', statusCode: 500});
+    sendResponse({res: res, message: 'Internal server error', statusCode: 500});
   }
 };
 
 export const getUserPosts = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    
+
+    // Check if payload is valid
+    if (!userId) {
+      sendResponse({res: res, message: 'Bad request: userId is required', statusCode: 400});
+    }
+
     // Fetch user's posts from the database
-    const posts = await PostService.getPostsByUserId({ userId });
-    
-    res.json({ posts });
+    const posts = await PostService.getPostsByUserId(userId);
+
+    sendResponse({res: res, data: posts, message: 'Posts fetched successfully', statusCode: 200});
   } catch (error) {
     console.error(error);
-    sendResponse({res: res, data: {}, message: 'Internal server error', statusCode: 500});
+    sendResponse({res: res, message: 'Internal server error', statusCode: 500});
+  }
+};
+
+export const deletePost = async (req: Request, res: Response) => {
+  try {
+    const postId = req.params.postId;
+
+    // Check if payload is valid
+    if (!postId) {
+      sendResponse({res: res, message: 'Bad request: postId is required', statusCode: 400});
+    }
+
+    // Delete posts from the database
+    const post = await PostService.deletePostById(postId);
+
+    sendResponse({res: res, data: post, message: 'Post deleted successfully', statusCode: 200});
+  } catch (error) {
+    console.error(error);
+    sendResponse({res: res, message: 'Internal server error', statusCode: 500});
   }
 };
