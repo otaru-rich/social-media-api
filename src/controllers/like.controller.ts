@@ -9,8 +9,6 @@ export const likePost = async (req: Request, res: Response) => {
 
     // Find the post
     const post = await Post.getPostById(postId)
-    console.log(userId)
-    console.log(postId)
     if (!post) {
       return sendResponse({
         res: res,
