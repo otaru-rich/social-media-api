@@ -40,19 +40,54 @@ export const getUserPosts = async (req: Request, res: Response) => {
   }
 };
 
+export const updatePost = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params
+    const { title, content } = req.body;
+
+    //Check if payload is valid
+    if (!postId || !title || !content) {
+      sendResponse({res: res, message: 'Bad request: all parameters are required', statusCode: 400});
+    }
+
+    // Fetch post
+    const post = await PostService.getPostById(postId);
+
+    // Check if post exist
+    if (!post) {
+      return sendResponse({res: res, message: 'Resource not found', statusCode: 404});
+    }
+
+    // // Update post
+    post.title = title;
+    post.content = content;
+    const updatedPost = await post.save();
+
+    sendResponse({res: res, data: updatedPost, message: 'Post updated successfully', statusCode: 200});
+  } catch (error) {
+    console.error(error);
+    sendResponse({res: res, message: 'Internal server error', statusCode: 500});
+  }
+};
+
 export const deletePost = async (req: Request, res: Response) => {
   try {
     const postId = req.params.postId;
 
     // Check if payload is valid
     if (!postId) {
-      sendResponse({res: res, message: 'Bad request: postId is required', statusCode: 400});
+      return sendResponse({res: res, message: 'Bad request: postId is required', statusCode: 400});
     }
 
     // Delete posts from the database
-    const post = await PostService.deletePostById(postId);
+    const deletedPost = await PostService.deletePostById(postId);
 
-    sendResponse({res: res, data: post, message: 'Post deleted successfully', statusCode: 200});
+    // Check if delete action was successful
+    if (!deletedPost) {
+      return sendResponse({res: res, message: 'Resource not found', statusCode: 404});
+    }
+
+    sendResponse({res: res, data: deletedPost, message: 'Post deleted successfully', statusCode: 200});
   } catch (error) {
     console.error(error);
     sendResponse({res: res, message: 'Internal server error', statusCode: 500});
