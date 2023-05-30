@@ -7,6 +7,15 @@ export const likePost = async (req: Request, res: Response) => {
     const postId = req.params.postId;
     const userId = req.body.userId;
 
+    // Check for valid payload
+    if (!postId || !userId) {
+      return sendResponse({
+        res: res,
+        message: 'Bad request: all parameters are required',
+        statusCode: 400
+      })
+    }
+
     // Find the post
     const post = await Post.getPostById(postId)
     if (!post) {
@@ -47,6 +56,15 @@ export const unlikePost = async (req: Request, res: Response) => {
   try {
     const postId = req.params.postId;
     const userId = req.body.userId;
+
+    // Check for valid payload
+    if (!postId || !userId) {
+      return sendResponse({
+        res: res,
+        message: 'Bad request: all parameters are required',
+        statusCode: 400
+      })
+    }
 
     // Find the post
     const post = await Post.getPostById(postId);

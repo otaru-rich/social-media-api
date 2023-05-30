@@ -3,6 +3,7 @@ import { type Response, type NextFunction, type Request } from 'express'
 import { UnauthorizedError, UserError } from '../utils/errorHandler'
 import { Role } from '../types/type'
 
+// This should not be stored in .env on a live server
 const { JWT_PRIVATE_KEY } = process.env
 
 export const authorize = (...roles: Role[]) => {
@@ -11,10 +12,12 @@ export const authorize = (...roles: Role[]) => {
     _: Response,
     next: NextFunction
   ) => {
+    const body = req.body
     validateToken(req)
     for (const role of roles) {
-      if (role == req.body.role) {
-        next(); return
+      if (role === req.body.role) {
+        req.body = body
+        return next();
       }
     }
     throw new UnauthorizedError(
@@ -26,6 +29,7 @@ export const authorize = (...roles: Role[]) => {
 export const validateToken = (
   req: Request
 ) => {
+
   const token = req.headers.authorization?.split(' ')[1]
 
   if (!token) {
@@ -34,7 +38,7 @@ export const validateToken = (
   }
 
   try {
-    req.body = jwt.verify(token, JWT_PRIVATE_KEY!)
+    req.body = jwt.verify(token, 'INTANA-SUPER-SECRETE')
   } catch (error) {
     throw new UserError('Invalid token.')
   }

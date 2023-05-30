@@ -1,8 +1,12 @@
 import express from 'express'
+import * as dotenv from 'dotenv'
 import { connectDB } from './config/database'
 import { logger } from './utils/logger'
 import { NotFoundErrorHandler, ServerErrorHandler } from './utils/errorHandler'
 import { loadRoutes } from './routes/routes'
+
+// Expose .env variable globally
+dotenv.config()
 
 const { PORT } = process.env
 

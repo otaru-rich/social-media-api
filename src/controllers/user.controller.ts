@@ -2,10 +2,23 @@ import { type Request, type Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User, { type IUser } from '../models/user.model'
+import { Role } from '../types/type'
+import { sendResponse } from '../utils/response'
+
+const { JWT_PRIVATE_KEY } = process.env
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { username, email, password } = req.body
+
+    // Check for valid payload
+    if (!username || !email || !password) {
+      return sendResponse({
+        res: res,
+        message: 'Bad request: all parameters are required',
+        statusCode: 400
+      })
+    }
 
     // Check if the email is already registered
     const existingUser = await User.findOne({ email })
@@ -21,6 +34,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const newUser: IUser = new User({
       username,
       email,
+      role: Role.USER,
       password: hashedPassword
     }) as IUser
 
@@ -38,6 +52,15 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body
 
+    // Check for valid payload
+    if (!email || !password) {
+      return sendResponse({
+        res: res,
+        message: 'Bad request: all parameters are required',
+        statusCode: 400
+      })
+    }
+
     // Find the user by email
     const user = await User.findOne({ email }) as IUser
     if (!user) {
@@ -51,7 +74,10 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, 'your-secret-key')
+    const token = jwt.sign({
+      userId: user._id,
+      role: user.role,
+    }, 'INTANA-SUPER-SECRETE')
 
     res.status(200).json({ token })
   } catch (error) {

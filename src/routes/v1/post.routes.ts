@@ -1,12 +1,14 @@
 import express from 'express'
-import { getUserPosts, getFollowingPosts, createPost, updatePost, deletePost} from '../../controllers/post.controller'
+import { authorize } from '../../middlewares/auth.middleware'
+import { Role } from '../../types/type'
+import { createPost, deletePost, getFollowingPosts, getUserPosts, updatePost } from '../../controllers/post.controller'
 
 const router = express.Router()
 
-router.post('/', createPost)
-router.get('/following', getFollowingPosts);
-router.get('/:userId', getUserPosts)
-router.patch('/:postId', updatePost)
-router.delete('/:postId', deletePost)
+router.post('/', authorize(Role.ADMIN, Role.USER), createPost)
+router.get('/following', authorize(Role.ADMIN, Role.USER), getFollowingPosts);
+router.get('/:userId', authorize(Role.ADMIN, Role.USER), getUserPosts)
+router.patch('/:postId', authorize(Role.ADMIN, Role.USER), updatePost)
+router.delete('/:postId', authorize(Role.ADMIN, Role.USER), deletePost)
 
 export default router
