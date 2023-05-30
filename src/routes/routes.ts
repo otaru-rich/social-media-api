@@ -3,6 +3,7 @@ import userRoutes from './v1/user.routes'
 import postRoutes from './v1/post.routes'
 import likeRoutes from './v1/like.routes'
 import commentRoutes from './v1/comment.routes'
+import followRoutes from './v1/follow.routes'
 
 export const loadRoutes = (app: Application) => {
   app.use('/api/v1/dummy', (req, res) => {
@@ -12,4 +13,5 @@ export const loadRoutes = (app: Application) => {
   app.use('/api/v1/posts', postRoutes)
   app.use('/api/v1/likes', likeRoutes)
   app.use('/api/v1/comments', commentRoutes)
+  app.use('/api/v1/follows', followRoutes)
 }
