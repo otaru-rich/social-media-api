@@ -1,7 +1,25 @@
+import * as mongoose from 'mongoose'
 import Post from '../models/post.model'
 
 export const getPostById = (id: string) => Post.findById(id)
-export const getPostsByUserId = (userId: string) => Post.find({ user: userId })
+export const getPostsByUserId = (userId: string) => {
+  const objectId = new mongoose.mongo.ObjectId(userId)
+  return Post.aggregate([
+    {
+      $match: {
+        user: objectId // Your user query condition
+      }
+    },
+    {
+      $lookup: {
+        from: 'likes',
+        localField: '_id',
+        foreignField: 'post',
+        as: 'likes'
+      }
+    }
+  ])
+}
 export const getPostsByIds = (followingIds: string[]) => Post.find({ user: { $in: followingIds } })
 export const getPostsByQuery = ({title, content}:{title?: string, content?: string}) => Post.find({
   $or: [

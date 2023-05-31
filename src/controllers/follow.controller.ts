@@ -49,7 +49,6 @@ export const followUser = async (req: Request, res: Response) => {
 
     return sendResponse({
       res: res,
-      data: newFollowing,
       message: 'User followed successfully',
       statusCode: 201
     })

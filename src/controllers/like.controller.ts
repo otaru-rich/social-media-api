@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
-import * as Post  from '../services/post.service';
+import { Request, Response } from 'express'
+import * as Post  from '../services/post.service'
+import * as Like from '../services/like.service'
 import { sendResponse } from '../utils/response'
 
 export const likePost = async (req: Request, res: Response) => {
@@ -27,14 +28,19 @@ export const likePost = async (req: Request, res: Response) => {
     }
 
     // Check if the post is already liked by the user
-    const isLiked = post.likes.includes(userId);
+    const isLiked = await Like.getLike({
+      postId: postId,
+      userId: userId
+    })
     if (isLiked) {
       return res.status(400).json({ message: 'Post is already liked' });
     }
 
     // Add the user to the list of likes
-    post.likes.push(userId);
-    await post.save();
+    const like = await Like.createLike({
+      postId: postId,
+      userId: userId
+    });
 
     res.json({ message: 'Post liked successfully' });
     return sendResponse({
@@ -77,7 +83,10 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Check if the post is liked by the user
-    const isLiked = post.likes.includes(userId);
+    const isLiked = Like.getLike({
+      postId: postId,
+      userId: userId
+    });
     if (!isLiked) {
       return sendResponse({
         res: res,
@@ -87,14 +96,16 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Remove the user from the list of likes
-    post.likes = post.likes.filter((like) => like.toString() !== userId);
-    await post.save();
+    const like = Like.deleteLike({
+      postId: postId,
+      userId: userId
+    })
 
     res.json({ message: 'Post unliked successfully' });
     return sendResponse({
       res: res,
       message: 'Post unliked successfully',
-      statusCode: 204
+      statusCode: 200
     });
   } catch (error) {
     console.error(error);

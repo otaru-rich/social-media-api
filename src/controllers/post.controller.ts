@@ -35,7 +35,13 @@ export const getUserPosts = async (req: Request, res: Response) => {
     // Fetch user's posts from the database
     const posts = await PostService.getPostsByUserId(userId)
 
-    sendResponse({res: res, data: posts, message: 'Posts fetched successfully', statusCode: 200})
+
+    sendResponse({
+      res: res,
+      data: posts,
+      message: 'Posts fetched successfully',
+      statusCode: 200
+    })
   } catch (error) {
     console.error(error)
     sendResponse({res: res, message: 'Internal server error', statusCode: 500})
@@ -110,7 +116,7 @@ export const getFollowingPosts = async (req: Request, res: Response) => {
     }
     // Fetch posts from users that the authenticated user is following
     const following = await Follow.getFollows({ userId: userId })
-    const followingIds = following.map((follow) => follow.following.toString())
+    const followingIds = following.map((follow) => follow.following.toString() )
 
     const posts = await Post.getPostsByIds(followingIds);
 
