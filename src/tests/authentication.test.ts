@@ -2,7 +2,6 @@ import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
 import { app, server } from '..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
-import supertest from 'supertest'
 
 
 /* Connecting to the database before each test. */
@@ -60,3 +59,22 @@ describe('POST /users/register', () => {
     }
   });
 });
+
+
+describe('POST /users/login', () => {
+  test('Should login the user and return 200 status code', async () => {
+    const user = {
+      email: 'malish@indicina.co',
+      password: '12345',
+    }
+    const response = await request(app)
+      .post('/api/v1/users/login')
+      .send(user);
+
+    /** Validate status code and cookie */
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('token');
+    expect(response.body.token).toHaveLength(184);
+  });
+});
+
