@@ -25,7 +25,7 @@ export const createPost = async (req: Request, res: Response) => {
 
 export const getUserPosts = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
+    const userId = req.body.userId
 
     // Check if payload is valid
     if (!userId) {

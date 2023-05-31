@@ -42,11 +42,10 @@ export const likePost = async (req: Request, res: Response) => {
       userId: userId
     });
 
-    res.json({ message: 'Post liked successfully' });
     return sendResponse({
       res: res,
       message: 'Post liked successfully',
-      statusCode: 204
+      statusCode: 200
     })
   } catch (error) {
     console.error(error);
@@ -60,6 +59,7 @@ export const likePost = async (req: Request, res: Response) => {
 
 export const unlikePost = async (req: Request, res: Response) => {
   try {
+
     const postId = req.params.postId;
     const userId = req.body.userId;
 
@@ -83,7 +83,7 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Check if the post is liked by the user
-    const isLiked = Like.getLike({
+    const isLiked = await Like.getLike({
       postId: postId,
       userId: userId
     });
@@ -96,12 +96,11 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Remove the user from the list of likes
-    const like = Like.deleteLike({
+    const like = await Like.deleteLike({
       postId: postId,
       userId: userId
     })
 
-    res.json({ message: 'Post unliked successfully' });
     return sendResponse({
       res: res,
       message: 'Post unliked successfully',
