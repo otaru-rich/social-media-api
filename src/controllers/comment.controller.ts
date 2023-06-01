@@ -50,6 +50,45 @@ export const createComment = async (req: Request, res: Response) => {
   }
 }
 
+// Controller method for retrieving comments of a post
+export const getComments = async (req: Request, res: Response) => {
+  try {
+    const { postId } = req.params;
+
+    // Check for valid payload
+    if (!postId) {
+      return sendResponse({
+        res: res,
+        message: 'Bad request: parameter is required',
+        statusCode: 400
+      })
+    }
+
+    // Check if the post exists
+    const post = await Post.getPostById(postId);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Find all comments associated with the post
+    const comments = await Comment.getComments(postId);
+
+    return sendResponse({
+      res: res,
+      data: comments,
+      message: 'Comments fetched successfully',
+      statusCode: 200
+    })
+  } catch (error) {
+    console.error('Failed to fetch comments:', error);
+    return sendResponse({
+      res: res,
+      message: 'Failed to fetch comment',
+      statusCode: 500
+    });
+  }
+};
+
 // Delete a comment
 export const deleteComment = async (req: Request, res: Response) => {
   try {
@@ -77,8 +116,7 @@ export const deleteComment = async (req: Request, res: Response) => {
 
     return sendResponse({
       res: res,
-      message: 'Comment deleted',
-      data: deletedComment,
+      message: 'Comment deleted successfully',
       statusCode: 200
     });
   } catch (error) {
