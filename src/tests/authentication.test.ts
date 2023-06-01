@@ -3,22 +3,26 @@ import { connectDB, disconnectDB } from '../config/database'
 import { app, server } from '..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 
-
-/* Connecting to the database before each test. */
-beforeEach(async () => {
-  await connectDB()
-});
-
-/* Closing database connection after each test. */
-afterEach(async () => {
-  await disconnectDB();
-  await new Promise((resolve) => {
-    server.close(resolve);
-  });
-});
+import * as User from '../services/user.services'
 
 
 describe('Auth API', () => {
+  beforeAll(async () => {
+    // Connect to the database
+    await connectDB()
+  });
+
+  afterAll(async () => {
+    // Clean up any test data after testing
+    await User.clearUsers();
+
+    // Close the database connection
+    await disconnectDB();
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
+  });
+
   test('should register a new user', async () => {
     const response = await request(app).post('/api/v1/users/register').send({
       username: 'testuser',

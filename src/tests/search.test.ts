@@ -8,25 +8,15 @@ import * as Post from '../services/post.service';
 import { IUser } from '../models/user.model';
 
 
-/* Connecting to the database before each test. */
-beforeEach(async () => {
-  await connectDB()
-});
-
-/* Closing database connection after each test. */
-afterEach(async () => {
-  await disconnectDB();
-  await new Promise((resolve) => {
-    server.close(resolve);
-  });
-});
-
 describe('Search API', () => {
   let token: string = '';
   let user: IUser ;
 
   // Simulate user authentication
   beforeAll(async () => {
+
+    // Connect to the database
+    await connectDB()
 
     const agent = request.agent(app);
 
@@ -44,6 +34,18 @@ describe('Search API', () => {
     });
     token = response.body.token;
     user = await  User.getUserByEmail('test@example.com') as IUser;
+  });
+
+  afterAll(async () => {
+    // Clean up any test data after testing
+    await User.clearUsers();
+    await Post.clearPosts();
+
+    // Close the database connection
+    await disconnectDB();
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
   });
 
   test('should search for posts based on title', async () => {
@@ -65,11 +67,6 @@ describe('Search API', () => {
   });
 
   test('should search for posts based on content', async () => {
-    // Create test posts
-    await Post.create({ title: 'Post 1', content: 'This is post 1', user: user._id });
-    await Post.create({ title: 'Post 2', content: 'This is post 2', user: user._id });
-    await Post.create({ title: 'Post 3', content: 'This is post 3', user: user._id });
-
     const response = await request(app)
       .get('/api/v1/search/posts')
       .set('Authorization', `Bearer ${token}`)
@@ -78,7 +75,7 @@ describe('Search API', () => {
     expect(response.status).toBe(200);
     expect(response.body.data).toBeInstanceOf(Array);
     expect(response.body.success).toBeTruthy();
-    expect(response.body.data[0]).toHaveProperty('title', 'Post 1');
-    expect(response.body.data[1]).toHaveProperty('title', 'Post 2');
+    expect(response.body.data[0]).toHaveProperty('title', 'First post');
+    expect(response.body.data[1]).toHaveProperty('title', 'Second post');
   });
 });

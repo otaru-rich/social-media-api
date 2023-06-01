@@ -1,30 +1,21 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import * as User from '../services/user.services'
 import { app, server } from '..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
+
+import * as User from '../services/user.services'
 import { IUser } from '../models/user.model'
-import { getPostsByUserId } from '../services/post.service'
+import * as Post from '../services/post.service'
+import * as Like from '../services/like.service'
 
-
-/* Connecting to the database before each test. */
-beforeEach(async () => {
-  await connectDB()
-});
-
-/* Closing database connection after each test. */
-afterEach(async () => {
-  await disconnectDB();
-  await new Promise((resolve) => {
-    server.close(resolve);
-  });
-});
 
 describe('Post API', () => {
   let token: string = '';
   let user: IUser ;
   // Simulate user authentication
   beforeAll(async () => {
+    // Connect to the database
+    await connectDB()
 
     const agent = request.agent(app);
 
@@ -42,6 +33,17 @@ describe('Post API', () => {
     });
     token = response.body.token;
     user = await  User.getUserByEmail('test@example.com') as IUser;
+  });
+
+  afterAll(async () => {
+    // Clean up any test data after testing
+    await User.clearUsers();
+    await Post.clearPosts();
+    await Like.clearLikes();
+    await disconnectDB();
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
   });
 
   // Test case for creating a new post
@@ -84,7 +86,7 @@ describe('Post API', () => {
 
   // Test case for liking a post
   test('should like a post', async () => {
-    const posts = await getPostsByUserId(user._id.toString())
+    const posts = await Post.getPostsByUserId(user._id.toString())
     const response = await request(app)
       .post(`/api/v1/posts/${posts[0]._id}/like`)
       .set('Authorization', `Bearer ${token}`)
@@ -96,7 +98,7 @@ describe('Post API', () => {
 
   // Test case for unliking a post
   test('should unlike a post', async () => {
-    const posts = await getPostsByUserId(user._id.toString())
+    const posts = await Post.getPostsByUserId(user._id.toString())
     const response = await request(app)
       .delete(`/api/v1/posts/${posts[0]._id}/like`)
       .set('Authorization', `Bearer ${token}`)

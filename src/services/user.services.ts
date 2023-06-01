@@ -13,5 +13,8 @@ export function getUserByEmail(email: string) {
   return User.findOne({email: email});
 }
 export function getUserById(followId: string) {
-  return User.findById(followId)
+  return User.findById(followId);
+}
+export function clearUsers() {
+  return User.deleteMany({});
 }

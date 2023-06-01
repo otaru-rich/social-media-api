@@ -1,31 +1,22 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import * as User from '../services/user.services'
 import { app, server } from '..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 import { IUser } from '../models/user.model'
-import { getPostsByUserId } from '../services/post.service'
-import { getComments } from '../services/comment.service'
 
+import * as User from '../services/user.services'
+import * as Post from '../services/post.service'
+import * as Comment from '../services/comment.service'
 
-/* Connecting to the database before each test. */
-beforeEach(async () => {
-  await connectDB()
-});
-
-/* Closing database connection after each test. */
-afterEach(async () => {
-  await disconnectDB();
-  await new Promise((resolve) => {
-    server.close(resolve);
-  });
-});
 
 describe('Comment API', () => {
   let token: string = '';
   let user: IUser ;
   // Simulate user authentication
   beforeAll(async () => {
+
+    // Connect to the database
+    await connectDB()
 
     const agent = request.agent(app);
 
@@ -45,10 +36,27 @@ describe('Comment API', () => {
     user = await  User.getUserByEmail('test@example.com') as IUser;
   });
 
+  afterAll(async () => {
+    // Clean up any test data after testing
+    await User.clearUsers();
+    await Post.clearPosts();
+    await Comment.clearComments();
+
+    // Close the database connection
+    await disconnectDB();
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
+  });
+
   test('should create a new comment', async () => {
-    const posts = await getPostsByUserId(user._id.toString())
+    const post = await Post.create({
+      title: 'Comment Test Post',
+      content: 'This is a comment test post',
+      user: user._id.toString()
+    })
     const response = await request(app)
-      .post(`/api/v1/posts/${posts[0]._id}/comments`)
+      .post(`/api/v1/posts/${post._id}/comments`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         content: 'Test comment',
@@ -62,7 +70,7 @@ describe('Comment API', () => {
   });
 
   test('should retrieve comments for a post', async () => {
-    const posts = await getPostsByUserId(user._id.toString())
+    const posts = await Post.getPostsByUserId(user._id.toString())
     const response = await request(app)
       .get(`/api/v1/posts/${posts[0]._id}/comments`)
       .set('Authorization', `Bearer ${token}`);
@@ -73,8 +81,8 @@ describe('Comment API', () => {
   });
 
   test('should delete a comment for a post', async () => {
-    const posts = await getPostsByUserId(user._id.toString())
-    const comments = await getComments(posts[0]._id)
+    const posts = await Post.getPostsByUserId(user._id.toString())
+    const comments = await Comment.getComments(posts[0]._id)
     const response = await request(app)
       .delete(`/api/v1/posts/${comments[0]._id}/comments`)
       .set('Authorization', `Bearer ${token}`);

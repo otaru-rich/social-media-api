@@ -5,19 +5,8 @@ import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 
 import * as User from '../services/user.services'
 import { IUser } from '../models/user.model'
+import * as Follow from '../services/follow.service'
 
-// Connecting to the database before each test
-beforeEach(async () => {
-  await connectDB()
-});
-
-// Closing database connection after each test
-afterEach(async () => {
-  await disconnectDB();
-  await new Promise((resolve) => {
-    server.close(resolve);
-  });
-});
 
 describe('Follow API', () => {
   let token: string = '';
@@ -26,6 +15,10 @@ describe('Follow API', () => {
 
   // Simulate user authentication
   beforeAll(async () => {
+
+    // Connect to the database
+    await connectDB()
+
     const agent = request.agent(app);
 
     // Register two new user
@@ -49,6 +42,18 @@ describe('Follow API', () => {
     token = response.body.token;
     userFollowed = await  User.getUserByEmail('testfollowed@example.com') as IUser;
     userFollowing = await  User.getUserByEmail('testfollowing@example.com') as IUser;
+  });
+
+  afterAll(async () => {
+    // Clean up any test data after testing
+    await User.clearUsers();
+    await Follow.clearFollows();
+
+    // Close the database connection
+    await disconnectDB();
+    await new Promise((resolve) => {
+      server.close(resolve);
+    });
   });
 
   test('should follow another user', async () => {
