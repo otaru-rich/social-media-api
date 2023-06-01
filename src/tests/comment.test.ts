@@ -24,9 +24,19 @@ afterEach(async () => {
 describe('Comment API', () => {
   let token: string = '';
   let user: IUser ;
+  // Simulate user authentication
   beforeAll(async () => {
-    /** Simulate user authentication */
+
     const agent = request.agent(app);
+
+    // Register a new user
+    await agent.post('/api/v1/users/register').send({
+      username: 'testuser',
+      email: 'test@example.com',
+      password: 'password123',
+    });
+
+    // Login the user
     const response = await agent.post('/api/v1/users/login').send({
       email: 'test@example.com',
       password: 'password123',
