@@ -50,7 +50,7 @@ export const followUser = async (req: Request, res: Response) => {
     return sendResponse({
       res: res,
       message: 'User followed successfully',
-      statusCode: 201
+      statusCode: 200
     })
   } catch (error) {
     console.error(error);

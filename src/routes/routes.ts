@@ -1,7 +1,6 @@
 import { type Application } from 'express'
 import userRoutes from './v1/user.routes'
 import postRoutes from './v1/post.routes'
-import followRoutes from './v1/follow.routes'
 import searchRoutes from './v1/search.routes'
 
 export const loadRoutes = (app: Application) => {
@@ -10,6 +9,5 @@ export const loadRoutes = (app: Application) => {
   })
   app.use('/api/v1/users', userRoutes)
   app.use('/api/v1/posts', postRoutes)
-  app.use('/api/v1/follow', followRoutes)
   app.use('/api/v1/search', searchRoutes);
 }
