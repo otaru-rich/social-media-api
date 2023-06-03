@@ -1,10 +1,9 @@
 import { Request, Response } from 'express'
 import * as PostService  from '../services/post.service'
-import { sendResponse } from '../utils/response'
 
 export const searchPosts = async (req: Request, res: Response) => {
   try {
-    const { keyword, tags }  = req.query
+    const { keyword, tags, page, limit }  = req.query
 
     // Check for valid payload
     if (!(keyword || tags)) {
@@ -14,11 +13,14 @@ export const searchPosts = async (req: Request, res: Response) => {
     }
 
     // Perform a case-insensitive search for posts containing the query in the title or content
+    const pageNumber = Number.parseInt(page as string, 10) || 1
+    const postLimit = Number.parseInt(limit as string, 10) || 10
     const posts = await PostService.getPostsByQuery({
-      title: keyword as string,
-      content: tags as string
+      keyword: keyword as string,
+      tags: tags as string
     })
 
+    res.locals.data = posts
     return res.status(200).json({
       message: 'Fetched posts successfully',
       data: posts

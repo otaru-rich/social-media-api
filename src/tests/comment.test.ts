@@ -1,13 +1,12 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '../..'
+import { app, server } from '..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 import { IUser } from '../models/user.model'
 
 import * as User from '../services/user.service'
 import * as Post from '../services/post.service'
 import * as Comment from '../services/comment.service'
-import { response } from 'express'
 
 
 describe('Comment API', () => {
@@ -84,25 +83,27 @@ describe('Comment API', () => {
   });
 
   test('should retrieve comments for a post', async () => {
-    const posts = await Post.getPostsByUserId(user._id.toString())
+    const page = 1
+    const limit = 10
+    const posts = await Post.getPostsByUserId(user._id.toString(), page, limit)
     const response = await request(app)
       .get(`/api/v1/posts/${posts[0]._id}/comments`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.success).toBeTruthy();
     expect(response.body.data).toBeInstanceOf(Array);
   });
 
   test('should delete a comment for a post', async () => {
-    const posts = await Post.getPostsByUserId(user._id.toString())
-    const comments = await Comment.getComments(posts[0]._id)
+    const page = 1
+    const limit = 10
+    const posts = await Post.getPostsByUserId(user._id.toString(), page, limit)
+    const comments = await Comment.getComments(posts[0]._id as string, page, limit)
     const response = await request(app)
       .delete(`/api/v1/posts/${comments[0]._id}/comments`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.success).toBeTruthy();
     expect(response.body).toHaveProperty('message', 'Comment deleted successfully');
   });
 });

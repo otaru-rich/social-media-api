@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '../..'
+import { app, server } from '..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 
 import * as User from '../services/user.service'
@@ -86,7 +86,9 @@ describe('Post API', () => {
 
   // Test case for liking a post
   test('should like a post', async () => {
-    const posts = await Post.getPostsByUserId(user._id.toString())
+    const page = 1
+    const limit = 10
+    const posts = await Post.getPostsByUserId(user._id.toString(), page, limit)
     const response = await request(app)
       .post(`/api/v1/posts/${posts[0]._id}/like`)
       .set('Authorization', `Bearer ${token}`)
@@ -98,7 +100,9 @@ describe('Post API', () => {
 
   // Test case for unliking a post
   test('should unlike a post', async () => {
-    const posts = await Post.getPostsByUserId(user._id.toString())
+    const page = 1
+    const limit = 10
+    const posts = await Post.getPostsByUserId(user._id.toString(), page, limit)
     const response = await request(app)
       .delete(`/api/v1/posts/${posts[0]._id}/unlike`)
       .set('Authorization', `Bearer ${token}`)

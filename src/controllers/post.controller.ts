@@ -41,6 +41,7 @@ export const createPost = async (req: Request, res: Response) => {
 export const getUserPosts = async (req: Request, res: Response) => {
   try {
     const userId = req.body.userId
+    const { page, limit } = req.query
 
     // Check if payload is valid
     if (!userId) {
@@ -50,7 +51,9 @@ export const getUserPosts = async (req: Request, res: Response) => {
     }
 
     // Fetch user's posts from the database
-    const posts = await PostService.getPostsByUserId(userId)
+    const pageNumber = Number.parseInt(page as string, 10) || 1
+    const postLimit = Number.parseInt(limit as string, 10) || 10
+    const posts = await PostService.getPostsByUserId(userId, pageNumber, postLimit)
 
     res.locals.data = posts
     return res.status(200).json({
@@ -120,6 +123,7 @@ export const deletePost = async (req: Request, res: Response) => {
 export const getFollowingPosts = async (req: Request, res: Response) => {
   try {
     const userId = req.body.userId
+    const { page, limit } = req.query
 
     // Check for valid payload
     if (!userId) {
@@ -132,7 +136,9 @@ export const getFollowingPosts = async (req: Request, res: Response) => {
     const following = await FollowService.getFollows({ userId: userId })
     const followingIds = following.map((follow) => follow.following.toString() )
 
-    const posts = await PostService.getPostsByIds(followingIds);
+    const pageNumber = Number.parseInt(page as string, 10) || 1
+    const postLimit = Number.parseInt(limit as string, 10) || 10
+    const posts = await PostService.getPostsByIds(followingIds, pageNumber, postLimit);
 
     res.locals.data = posts;
     return res.status(200).json({

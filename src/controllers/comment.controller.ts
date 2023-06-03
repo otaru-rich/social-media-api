@@ -58,6 +58,7 @@ export const createComment = async (req: Request, res: Response) => {
 export const getComments = async (req: Request, res: Response) => {
   try {
     const { postId } = req.params;
+    const { page, limit } = req.query
 
     // Check for valid payload
     if (!postId) {
@@ -75,7 +76,9 @@ export const getComments = async (req: Request, res: Response) => {
     }
 
     // Find all comments associated with the post
-    const comments = await CommentService.getComments(postId);
+    const pageNumber = Number.parseInt(page as string, 10) || 1
+    const commentLimit = Number.parseInt(limit as string, 10) || 10
+    const comments = await CommentService.getComments(postId, pageNumber, commentLimit);
 
     return res.status(200).json({
       message: 'Fetched comments successfully',

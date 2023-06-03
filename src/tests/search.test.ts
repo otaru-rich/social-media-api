@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '../..'
-import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
+import { app, server } from '..'
+import {describe, expect, test } from '@jest/globals';
 
 import * as User from '../services/user.service';
 import * as Post from '../services/post.service';
@@ -55,26 +55,24 @@ describe('Search API', () => {
     await Post.create({ title: 'Third post', content: 'This is the third post', user: user._id });
 
     const response = await request(app)
-      .get('/api/v1/search/posts')
+      .get('/api/v1/posts/search')
       .set('Authorization', `Bearer ${token}`)
-      .query({ title: 'first', content: ''});
+      .query({ keyword: 'first', tags: ''});
 
     expect(response.status).toBe(200);
     expect(response.body.data).toBeInstanceOf(Array);
-    expect(response.body.success).toBeTruthy();
     expect(response.body.data[0]).toHaveProperty('title', 'First post');
     expect(response.body.data[0]).toHaveProperty('content', 'This is the first post');
   });
 
   test('should search for posts based on content', async () => {
     const response = await request(app)
-      .get('/api/v1/search/posts')
+      .get('/api/v1/posts/search')
       .set('Authorization', `Bearer ${token}`)
-      .query({ title: '', content: 'This is post' });
+      .query({ keyword: '', tags: 'This is post' });
 
     expect(response.status).toBe(200);
     expect(response.body.data).toBeInstanceOf(Array);
-    expect(response.body.success).toBeTruthy();
     expect(response.body.data[0]).toHaveProperty('title', 'First post');
     expect(response.body.data[1]).toHaveProperty('title', 'Second post');
   });

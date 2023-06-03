@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '../..'
+import { app, server } from '..'
 import { describe, expect, test } from '@jest/globals';
 
 import * as User from '../services/user.service'
