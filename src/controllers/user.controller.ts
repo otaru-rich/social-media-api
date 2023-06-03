@@ -1,8 +1,6 @@
 import { type Request, type Response } from 'express'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import User, { type IUser } from '../models/user.model'
-import { Role } from '../types/type'
+import { type IUser } from '../models/user.model'
+import * as UserService from '../services/user.service'
 import { sendResponse } from '../utils/response'
 
 const { JWT_PRIVATE_KEY } = process.env
@@ -21,25 +19,16 @@ export const registerUser = async (req: Request, res: Response) => {
     }
 
     // Check if the email is already registered
-    const existingUser = await User.findOne({ email })
+    const existingUser = await UserService.getUserByEmail( email );
     if (existingUser != null) {
       return res.status(409).json({ message: 'Email already exist' })
     }
 
-    // Hash the password
-    const saltRounds = 10
-    const hashedPassword = await bcrypt.hash(password, saltRounds)
-
-    // Create a new user
-    const newUser: IUser = new User({
-      username,
-      email,
-      role: Role.USER,
-      password: hashedPassword
-    }) as IUser
-
-    // Save the user to the database
-    await newUser.save()
+    await UserService.register({
+      username: username,
+      email: email,
+      password: password
+    } as IUser);
 
     res.status(201).json({ message: 'User registered successfully' })
   } catch (error) {
@@ -62,23 +51,20 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 
     // Find the user by email
-    const user = await User.findOne({ email }) as IUser
+    const user = await UserService.getUserByEmail(email) as IUser
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
 
     // Compare the provided password with the stored hashed password
-    const isPasswordValid = await bcrypt.compare(password, user.password)
+
+    const isPasswordValid = UserService.validatePassword(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
 
-    // Generate a JWT token
-    const token = jwt.sign({
-      userId: user._id,
-      role: user.role,
-    }, 'INTANA-SUPER-SECRETE')
-
+    console.log('USER FROM LOGIN CONTROLLER: ', user)
+    const token = await UserService.generateToken(user)
     res.status(200).json({ token })
   } catch (error) {
     console.error('Error during user login:', error)

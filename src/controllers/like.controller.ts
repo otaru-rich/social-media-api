@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import * as Post  from '../services/post.service'
-import * as Like from '../services/like.service'
+import * as PostService  from '../services/post.service'
+import * as LikeService from '../services/like.service'
 import { sendResponse } from '../utils/response'
 
 export const likePost = async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ export const likePost = async (req: Request, res: Response) => {
     }
 
     // Find the post
-    const post = await Post.getPostById(postId)
+    const post = await PostService.getPostById(postId)
     if (!post) {
       return sendResponse({
         res: res,
@@ -28,7 +28,7 @@ export const likePost = async (req: Request, res: Response) => {
     }
 
     // Check if the post is already liked by the user
-    const isLiked = await Like.getLike({
+    const isLiked = await LikeService.getLike({
       postId: postId,
       userId: userId
     })
@@ -37,10 +37,14 @@ export const likePost = async (req: Request, res: Response) => {
     }
 
     // Add the user to the list of likes
-    const like = await Like.createLike({
+    const like = await LikeService.createLike({
       postId: postId,
       userId: userId
     });
+
+    // Increment post like
+    post.likesCount = post.likesCount + 1;
+    await post.save()
 
     return sendResponse({
       res: res,
@@ -73,7 +77,7 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Find the post
-    const post = await Post.getPostById(postId);
+    const post = await PostService.getPostById(postId);
     if (!post) {
       return sendResponse({
         res: res,
@@ -83,7 +87,7 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Check if the post is liked by the user
-    const isLiked = await Like.getLike({
+    const isLiked = await LikeService.getLike({
       postId: postId,
       userId: userId
     });
@@ -96,10 +100,14 @@ export const unlikePost = async (req: Request, res: Response) => {
     }
 
     // Remove the user from the list of likes
-    const like = await Like.deleteLike({
+    const like = await LikeService.deleteLike({
       postId: postId,
       userId: userId
     })
+
+    // Decrement post like
+    post.likesCount = post.likesCount - 1
+    await post.save()
 
     return sendResponse({
       res: res,

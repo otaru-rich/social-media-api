@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '..'
+import { app, server } from '../..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 
-import * as User from '../services/user.services'
+import * as User from '../services/user.service'
 import { IUser } from '../models/user.model'
 import * as Post from '../services/post.service'
 import * as Like from '../services/like.service'
@@ -100,11 +100,33 @@ describe('Post API', () => {
   test('should unlike a post', async () => {
     const posts = await Post.getPostsByUserId(user._id.toString())
     const response = await request(app)
-      .delete(`/api/v1/posts/${posts[0]._id}/like`)
+      .delete(`/api/v1/posts/${posts[0]._id}/unlike`)
       .set('Authorization', `Bearer ${token}`)
       .send({userId: user._id});
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('message', 'Post unliked successfully');
+  });
+
+  // Test case for unliking a non-existing post
+  test('should return an error when liking a non-existing post', async () => {
+    const response = await request(app)
+      .post(`/api/v1/posts/${user._id}/like`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ userId: user._id });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('message', 'Post not found');
+  });
+
+  // Test case for unliking a non-existing post
+  test('should return an error when unliking a non-existing post', async () => {
+    const response = await request(app)
+      .delete(`/api/v1/posts/${user._id}/unlike`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({ userId: user._id });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('message', 'Post not found');
   });
 });

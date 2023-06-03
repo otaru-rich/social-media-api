@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken'
 import { type Response, type NextFunction, type Request } from 'express'
+import jwt from 'jsonwebtoken'
 import { UnauthorizedError, UserError } from '../utils/errorHandler'
 import { Role } from '../types/type'
 
@@ -7,16 +7,14 @@ import { Role } from '../types/type'
 const { JWT_PRIVATE_KEY } = process.env
 
 export const authorize = (...roles: Role[]) => {
-  return (
+  return async (
     req: Request,
     _: Response,
     next: NextFunction
   ) => {
-    const body = req.body
-    validateToken(req)
+    await validateToken(req)
     for (const role of roles) {
-      if (role === req.body.role) {
-        req.body = body
+      if (role === req.body.verified.role) {
         return next();
       }
     }
@@ -26,20 +24,21 @@ export const authorize = (...roles: Role[]) => {
   }
 }
 
-export const validateToken = (
+export const validateToken = async (
   req: Request
 ) => {
 
   const token = req.headers.authorization?.split(' ')[1]
 
   if (!token) {
-    req.body = { ...req.body, role: Role.GUEST }
+    req.body = { ...req.body, verified: { role: Role.GUEST }}
     return
   }
 
   try {
-    req.body = jwt.verify(token, 'INTANA-SUPER-SECRETE')
+    const jwtPayload = await jwt.verify(token, JWT_PRIVATE_KEY as string)
+    req.body = {...req.body, verified: jwtPayload}
   } catch (error) {
-    throw new UserError('Invalid token.')
+    return new UserError('Invalid token.')
   }
 }

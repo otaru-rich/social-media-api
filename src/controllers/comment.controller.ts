@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import * as Post from '../services/post.service'
-import * as Comment from '../services/comment.service'
+import * as PostService from '../services/post.service'
+import * as CommentService from '../services/comment.service'
 import { sendResponse } from '../utils/response'
 
 export const createComment = async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ export const createComment = async (req: Request, res: Response) => {
     }
 
     // Find the post
-    const post = await Post.getPostById(postId);
+    const post = await PostService.getPostById(postId);
     if (!post) {
       return sendResponse({
         res: res,
@@ -28,11 +28,15 @@ export const createComment = async (req: Request, res: Response) => {
     }
 
     // Create new comment
-    const comment = await Comment.create({
+    const comment = await CommentService.create({
       content: content,
       post: post._id.toString(),
       user: userId
     })
+
+    // Increment post comment count
+    post.commentsCount = post.commentsCount + 1
+    post.save()
 
     return sendResponse({
       res: res,
@@ -57,28 +61,26 @@ export const getComments = async (req: Request, res: Response) => {
 
     // Check for valid payload
     if (!postId) {
-      return sendResponse({
-        res: res,
-        message: 'Bad request: parameter is required',
-        statusCode: 400
-      })
+      return res.status(400).json({
+        message: 'Bad request'
+      });
     }
 
     // Check if the post exists
-    const post = await Post.getPostById(postId);
+    const post = await PostService.getPostById(postId);
     if (!post) {
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({
+        message: 'Post not found'
+      });
     }
 
     // Find all comments associated with the post
-    const comments = await Comment.getComments(postId);
+    const comments = await CommentService.getComments(postId);
 
-    return sendResponse({
-      res: res,
-      data: comments,
-      message: 'Comments fetched successfully',
-      statusCode: 200
-    })
+    return res.status(200).json({
+      message: 'Fetched comments successfully',
+      data: comments
+    });
   } catch (error) {
     console.error('Failed to fetch comments:', error);
     return sendResponse({
@@ -104,7 +106,7 @@ export const deleteComment = async (req: Request, res: Response) => {
     }
 
     // Find and delete the comment
-    const deletedComment = await Comment.deleteComment(commentId)
+    const deletedComment = await CommentService.deleteComment(commentId)
 
     if (!deletedComment) {
       return sendResponse({
@@ -113,6 +115,9 @@ export const deleteComment = async (req: Request, res: Response) => {
         statusCode: 404
       });
     }
+
+    // TODO Decrement post comment count
+
 
     return sendResponse({
       res: res,

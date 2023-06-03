@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import * as User from '../services/user.services'
-import * as Follow from '../services/follow.service'
+import * as UserService from '../services/user.service'
+import * as FollowService from '../services/follow.service'
 import { sendResponse } from '../utils/response'
 
 export const followUser = async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ export const followUser = async (req: Request, res: Response) => {
     }
 
     // Check if the user to follow exists
-    const userToFollow = await User.getUserById(followId)
+    const userToFollow = await UserService.getUserById(followId)
     if (!userToFollow) {
       return sendResponse({
         res: res,
@@ -28,7 +28,7 @@ export const followUser = async (req: Request, res: Response) => {
     }
 
     // Check if the user is already following the target user
-    const isFollowing = await Follow.getFollow({
+    const isFollowing = await FollowService.getFollow({
       userId: userId,
       followId: followId
     })
@@ -42,7 +42,7 @@ export const followUser = async (req: Request, res: Response) => {
     }
 
     // Create a new following relationship
-    const newFollowing = await  Follow.createFollow({
+    const newFollowing = await  FollowService.createFollow({
       userId: userId,
       followId: followId
     })
@@ -78,7 +78,7 @@ export const unfollowUser = async (req: Request, res: Response) => {
     }
 
     // Check if the user to unfollow exists
-    const userToUnfollow = await User.getUserById(followId);
+    const userToUnfollow = await UserService.getUserById(followId);
     if (!userToUnfollow) {
       return sendResponse({
         res: res,
@@ -88,7 +88,7 @@ export const unfollowUser = async (req: Request, res: Response) => {
     }
 
     // Check if the user is already not following the target user
-    const isFollowing = await Follow.getFollow({
+    const isFollowing = await FollowService.getFollow({
       userId: userId,
       followId: followId
     })
@@ -102,7 +102,7 @@ export const unfollowUser = async (req: Request, res: Response) => {
     }
 
     // Delete the following relationship
-    await Follow.deleteFollow({
+    await FollowService.deleteFollow({
       userId: userId,
       followId: followId
     })

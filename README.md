@@ -134,7 +134,7 @@ To run the unit tests for the project API, follow these steps:
 
 ## API Documentation
 
-The API documentation is available at [link-to-documentation](https://link-to-documentation). It provides detailed information about the available endpoints, request/response formats, and authentication requirements.
+The API documentation is available at [Postman Documentation](https://github.com/otaru-rich/social-media-api/blob/test/social_media_api.postman_collection.json). It provides detailed information about the available endpoints, request/response formats, and authentication requirements.
 
 ## Contribution
 
@@ -148,4 +148,4 @@ If you would like to contribute to the project, please follow these steps:
 
 ## Contact
 
-For any inquiries or support, please contact [richotaru@gmail.com](mailto:your-email-address).
+For any inquiries or support, please contact [Richard Otaru](mailto:richotaru@gmail.com).

@@ -9,14 +9,6 @@ export const getPostsByUserId = (userId: string) => {
       $match: {
         user: objectId // Your user query condition
       }
-    },
-    {
-      $lookup: {
-        from: 'likes',
-        localField: '_id',
-        foreignField: 'post',
-        as: 'likes'
-      }
     }
   ])
 }

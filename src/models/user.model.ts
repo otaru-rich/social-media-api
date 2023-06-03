@@ -3,7 +3,7 @@ import { Schema, type Document, model, type Model } from 'mongoose'
 export interface IUser extends Document {
   username: string
   email: string
-  role: string
+  role?: string
   password: string
 }
 

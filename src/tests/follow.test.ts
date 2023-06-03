@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '..'
+import { app, server } from '../..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 
-import * as User from '../services/user.services'
+import * as User from '../services/user.service'
 import { IUser } from '../models/user.model'
 import * as Follow from '../services/follow.service'
 

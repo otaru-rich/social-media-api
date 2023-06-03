@@ -1,5 +1,6 @@
 import Comment from '../models/comment.model'
 
+export const getCommentById = (commentId: string) => Comment.findById(commentId)
 export const getComments = ( postId: string) => Comment.find({ post: postId });
 export const create = (value: Record<string, any>) => new Comment(value)
   .save().then((comment) => comment.toObject())

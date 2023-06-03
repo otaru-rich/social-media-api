@@ -108,7 +108,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"tylara@gmail.com\",\r\n    \"password\": \"12345\"\r\n}",
+					"raw": "{\r\n    \"email\": \"otarurich@gmail.com\",\r\n    \"password\": \"12345\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -141,7 +141,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -150,7 +150,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"64771bead84164e32e3de8a0\",\r\n    \"title\": \"My first Post - Itana2\",\r\n    \"content\": \"This is my first post content as itana2.\"\r\n}",
+					"raw": "{\r\n    \"userId\": \"647a8dab3b61c4f0cb0e3e00\",\r\n    \"title\": \"My first Post - Itana\",\r\n    \"content\": \"This is my first post content as itana.\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -185,7 +185,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -194,7 +194,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n    \"userId\": \"647a8dab3b61c4f0cb0e3e00\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -202,7 +202,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/posts/6476ef35a5f6369be7e4eeb1",
+					"raw": "http://localhost:9000/api/v1/posts",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -211,8 +211,7 @@
 					"path": [
 						"api",
 						"v1",
-						"posts",
-						"6476ef35a5f6369be7e4eeb1"
+						"posts"
 					]
 				},
 				"description": "**Retrieve posts of a specific user.**  \nEndpoint: `http://localhost:9000/api/v1/posts/{userId}`  \nAuthorization: Bearer Token"
@@ -227,7 +226,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -236,7 +235,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"6476ef35a5f6369be7e4eeb1\"\r\n}",
+					"raw": "{\r\n    \"userId\": \"647afd10a50b1ea5fe04f6c0\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -244,7 +243,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/users/64771bead84164e32e3de8a0/follow",
+					"raw": "http://localhost:9000/api/v1/users/647a8dab3b61c4f0cb0e3e00/follow",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -254,7 +253,7 @@
 						"api",
 						"v1",
 						"users",
-						"64771bead84164e32e3de8a0",
+						"647a8dab3b61c4f0cb0e3e00",
 						"follow"
 					]
 				},
@@ -270,7 +269,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -316,7 +315,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2NWViNTIyNjY1MzE2NDA5YzIwYTQiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTQ3OTExNn0.Cm5FZcDZRTBdPRIgozsYI9zBH-QuH1X8RmctumqGeec",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -325,7 +324,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"6476ef35a5f6369be7e4eeb1\"\r\n}",
+					"raw": "{\r\n    \"userId\": \"647a8dab3b61c4f0cb0e3e00\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -358,7 +357,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2NWViNTIyNjY1MzE2NDA5YzIwYTQiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTQ3OTExNn0.Cm5FZcDZRTBdPRIgozsYI9zBH-QuH1X8RmctumqGeec",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -367,7 +366,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"64771bead84164e32e3de8a0\"\r\n}",
+					"raw": "{\r\n    \"userId\": \"647afd10a50b1ea5fe04f6c0\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -375,7 +374,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/posts/6477265f0a8c4b34457ec28d/like",
+					"raw": "http://localhost:9000/api/v1/posts/647a937e9681564217ac435b/like",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -385,7 +384,7 @@
 						"api",
 						"v1",
 						"posts",
-						"6477265f0a8c4b34457ec28d",
+						"647a937e9681564217ac435b",
 						"like"
 					]
 				},
@@ -401,7 +400,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -410,7 +409,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"64771bead84164e32e3de8a0\"\r\n}",
+					"raw": "{\r\n    \"userId\": \"647afd10a50b1ea5fe04f6c0\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -418,7 +417,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/posts/6477265f0a8c4b34457ec28d/like",
+					"raw": "http://localhost:9000/api/v1/posts/647a937e9681564217ac435b/unlike",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -428,8 +427,8 @@
 						"api",
 						"v1",
 						"posts",
-						"6477265f0a8c4b34457ec28d",
-						"like"
+						"647a937e9681564217ac435b",
+						"unlike"
 					]
 				},
 				"description": "**Unlike a post.**  \nEndpoint: `http://localhost:9000/api/v1/posts/{postId}/like`  \nAuthorization: Bearer Token  \nBody: JSON object containing userId."
@@ -444,7 +443,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -453,7 +452,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\": \"64771bead84164e32e3de8a0\",\r\n    \"content\": \"This my first comment for this awesome post as Tylara.\"\r\n}",
+					"raw": "{\r\n    \"userId\": \"647afd10a50b1ea5fe04f6c0\",\r\n    \"content\": \"This my first comment for this awesome post as Itana.\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -461,7 +460,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/comments/6477265f0a8c4b34457ec28d",
+					"raw": "http://localhost:9000/api/v1/posts/647a937e9681564217ac435b/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -470,8 +469,9 @@
 					"path": [
 						"api",
 						"v1",
-						"comments",
-						"6477265f0a8c4b34457ec28d"
+						"posts",
+						"647a937e9681564217ac435b",
+						"comments"
 					]
 				},
 				"description": "**Create a comment on a post.**  \nEndpoint: `http://localhost:9000/api/v1/posts/{postId}/comments`  \nAuthorization: Bearer Token  \nBody: JSON object containing userId and comment content."
@@ -489,7 +489,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -506,7 +506,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/posts/6476ef35a5f6369be7e4eeb1",
+					"raw": "http://localhost:9000/api/v1/posts/647a937e9681564217ac435b/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -516,7 +516,8 @@
 						"api",
 						"v1",
 						"posts",
-						"6476ef35a5f6369be7e4eeb1"
+						"647a937e9681564217ac435b",
+						"comments"
 					]
 				},
 				"description": "**Retrieve comments for a specific post.**  \nEndpoint: `http://localhost:9000/api/v1/posts/{postId}/comments`  \nAuthorization: Bearer Token"
@@ -531,7 +532,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -577,7 +578,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDc2ZWYzNWE1ZjYzNjliZTdlNGVlYjEiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTUxNjA5NX0.A5fxOt_ClfvqqjzxNX8ybLQP9buuVkO9muBtplChnlQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDdhOGRhYjNiNjFjNGYwY2IwZTNlMDAiLCJyb2xlIjoiQVVUSEVOVElDQVRFRCIsImlhdCI6MTY4NTc3NTI5MX0.ZCOtQOr5XyR42opa1_rRUfZIAHM8aOPgsyGNkntplN4",
 							"type": "string"
 						}
 					]
@@ -594,7 +595,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9000/api/v1/search/posts?title=tylara&content=tylara",
+					"raw": "http://localhost:9000/api/v1/posts/search?keyword=tylara&tags=tylara",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -603,16 +604,16 @@
 					"path": [
 						"api",
 						"v1",
-						"search",
-						"posts"
+						"posts",
+						"search"
 					],
 					"query": [
 						{
-							"key": "title",
+							"key": "keyword",
 							"value": "tylara"
 						},
 						{
-							"key": "content",
+							"key": "tags",
 							"value": "tylara"
 						}
 					]

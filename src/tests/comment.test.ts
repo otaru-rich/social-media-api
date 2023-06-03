@@ -1,12 +1,13 @@
 import request from 'supertest';
 import { connectDB, disconnectDB } from '../config/database'
-import { app, server } from '..'
+import { app, server } from '../..'
 import {describe, expect, test, beforeEach, afterEach} from '@jest/globals';
 import { IUser } from '../models/user.model'
 
-import * as User from '../services/user.services'
+import * as User from '../services/user.service'
 import * as Post from '../services/post.service'
 import * as Comment from '../services/comment.service'
+import { response } from 'express'
 
 
 describe('Comment API', () => {
@@ -47,6 +48,19 @@ describe('Comment API', () => {
     await new Promise((resolve) => {
       server.close(resolve);
     });
+  });
+
+
+  test('should return an error when commenting on a non-existing post', async () => {
+    const response = await request(app).post(`/api/v1/posts/${user._id}/comments`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      content: 'This is a comment on a non-existing post.',
+      userId: user._id,
+    });
+
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty('message', 'Post not found');
   });
 
   test('should create a new comment', async () => {
