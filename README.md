@@ -108,7 +108,15 @@ To get started with the project API, follow these steps:
 
       Replace the values with your desired configuration.
 
-4. Start the API server:
+4. Run the Docker container:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   The MongoDB database and Redis Services will be started in a Docker container.
+
+5. Start the API server:
 
    ```bash
    npm start
@@ -116,7 +124,7 @@ To get started with the project API, follow these steps:
 
    The server will start running on the specified port (default is 9000) and connect to the MongoDB database.
 
-5. The API is now ready to accept requests. You can use Postman routes collection in the root dir or cURL to make HTTP requests to the API endpoints.
+6. The API is now ready to accept requests. You can use Postman routes collection in the root dir or cURL to make HTTP requests to the API endpoints.
 
 ## Testing
 
@@ -124,7 +132,7 @@ To run the unit tests for the project API, follow these steps:
 
 1. Make sure you have the project dependencies installed (step 2 in the "Getting Started" section).
 
-2. Run the following command:
+2. Run the following command: (ensure the project is NOT running);
 
    ```bash
    npm test
