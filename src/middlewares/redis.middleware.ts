@@ -1,50 +1,36 @@
-import { Request, Response, NextFunction } from 'express';
-import { promisify } from 'util';
+import {logger} from "../utils/logger";
+import {redisClient} from "../services/caching.service";
+import {Response, Request, NextFunction} from "express";
 
-const redis = require('redis');
-const redisClient = redis.createClient();
+export const checkCache = (tag: string) => {
 
-redisClient.on('connect', () => {
-  console.log('Connected to Redis');
-});
+    return async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+    const { postId } = req.params;
+    const { page, limit } = req.query
+    const cacheKey = `${tag}:${postId}:${page}:${limit}`;
 
-redisClient.on('error', (error: any) => {
-  console.error('Redis Error:', error);
-});
+        await redisClient.get(cacheKey as any)
+            .then((cachedData: any) => {
+            console.log('Checking For cached response in Redis:', cachedData);
+            if (cachedData) {
+                const response = JSON.parse(cachedData);
 
-const getAsync = promisify(redisClient.get).bind(redisClient);
-const setAsync = promisify(redisClient.setEx).bind(redisClient);
+                return res.json(response);
+            }else{
+                // Proceed to the next middleware in case of no cached data
+                logger.info('Proceed to the next middleware in case of an error or no cached data');
+                next();
+            }
+        }).catch((error: any) => {
+            logger.error('Redis Cache Error:', error);
+            // Proceed to the next middleware in case of an error
+            next();
+        });
 
-export const checkCache = (req: Request, res: Response, next: NextFunction) => {
-  const cacheKey = req.originalUrl;
-
-  getAsync(cacheKey)
-      .then((cachedData: string | null) => {
-        if (cachedData) {
-          const response = JSON.parse(cachedData);
-          return res.json(response);
-        } else {
-          // Proceed to the next middleware if data is not cached
-          next();
-        }
-      })
-      .catch((error: any) => {
-        console.error('Redis Cache Error:', error);
-        // Proceed to the next middleware in case of an error
-        next();
-      });
+}
 };
 
-// Middleware function to cache the response in Redis
-export const cacheResponse = (req: Request, res: Response, next: NextFunction) => {
-  const cacheKey = req.originalUrl;
-  const responseData = res.locals.data;
-
-    setAsync(cacheKey, 600, JSON.stringify(responseData)).then((response: any) => {
-        console.log('Response cached:', response);
-    }).catch((error: any) => {
-        console.error('Redis Cache Error:', error);
-    });
-
-    next();
-};

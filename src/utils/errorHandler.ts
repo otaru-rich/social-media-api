@@ -22,13 +22,6 @@ export class UnauthorizedError extends ErrorObject {
   }
 }
 
-export class ForbiddenError extends ErrorObject {
-  constructor (message: string) {
-    super('FORBIDDEN_ERROR', 403)
-    this.message = message
-  }
-}
-
 export class NotFoundError extends ErrorObject {
   constructor (message: string) {
     super('NOT_FOUND_ERROR', 404)
@@ -63,14 +56,14 @@ export const NotFoundErrorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  throw new NotFoundError('Resource not found.')
+  ServerErrorHandler(new NotFoundError('Resource not found.'), req,res)
+
 }
 
 export const ServerErrorHandler = (
   error: ErrorObject,
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const { statusCode = 500, message } = error
 

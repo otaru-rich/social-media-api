@@ -2,10 +2,11 @@ import { Request, Response } from 'express'
 import * as UserService from '../services/user.service'
 import * as FollowService from '../services/follow.service'
 import { sendResponse } from '../utils/response'
+import {ServerError, ServerErrorHandler} from "../utils/errorHandler";
 
 export const followUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.body.verified?.userId;
     const { followId } = req.params;
 
     // Check if payload is valid
@@ -54,18 +55,14 @@ export const followUser = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.error(error);
-    return sendResponse({
-      res: res,
-      message: 'Internal server error',
-      statusCode: 500
-    })
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 }
 
 
 export const unfollowUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.body.verified?.userId;
     const { followId } = req.params;
 
     // Check for valid payload
@@ -114,10 +111,6 @@ export const unfollowUser = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.error(error);
-    return sendResponse({
-      res: res,
-      message: 'Internal server error',
-      statusCode: 500
-    })
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 }

@@ -5,6 +5,7 @@ import { connectDB } from './config/database'
 import { logger } from './utils/logger'
 import { NotFoundErrorHandler, ServerErrorHandler } from './utils/errorHandler'
 import { loadRoutes } from './routes/routes'
+// import {initializeRedisClient} from "./middlewares/redis.middleware";
 
 // Expose .env variable globally
 dotenv.config()
@@ -20,6 +21,8 @@ app.use(express.json())
 
 // connect DB
 connectDB()
+
+
 
 // load routes
 loadRoutes(app)

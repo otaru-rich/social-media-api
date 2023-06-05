@@ -2,11 +2,12 @@ import { Request, Response } from 'express'
 import * as PostService  from '../services/post.service'
 import * as LikeService from '../services/like.service'
 import { sendResponse } from '../utils/response'
+import {ServerError, ServerErrorHandler} from "../utils/errorHandler";
 
 export const likePost = async (req: Request, res: Response) => {
   try {
     const postId = req.params.postId;
-    const userId = req.body.userId;
+    const userId = req.body.verified?.userId;
 
     // Check for valid payload
     if (!postId || !userId) {
@@ -37,7 +38,7 @@ export const likePost = async (req: Request, res: Response) => {
     }
 
     // Add the user to the list of likes
-    const like = await LikeService.createLike({
+    await LikeService.createLike({
       postId: postId,
       userId: userId
     });
@@ -64,8 +65,8 @@ export const likePost = async (req: Request, res: Response) => {
 export const unlikePost = async (req: Request, res: Response) => {
   try {
 
-    const postId = req.params.postId;
-    const userId = req.body.userId;
+    const {postId} = req.params;
+    const userId = req.body.verified?.userId;
 
     // Check for valid payload
     if (!postId || !userId) {
@@ -116,10 +117,6 @@ export const unlikePost = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(error);
-    return sendResponse({
-      res: res,
-      message: 'Internal server error',
-      statusCode: 500
-    });
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 };

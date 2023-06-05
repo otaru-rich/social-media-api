@@ -2,11 +2,16 @@ import { Request, Response } from 'express'
 import * as PostService from '../services/post.service'
 import * as CommentService from '../services/comment.service'
 import { sendResponse } from '../utils/response'
+import {cacheResponse, redisClient} from "../services/caching.service";
+import {IComment} from "../models/comment.model";
+import {IPost} from "../models/post.model";
+import {ServerError, ServerErrorHandler} from "../utils/errorHandler";
 
 export const createComment = async (req: Request, res: Response) => {
   try {
     const postId = req.params.postId;
-    const { userId, content } = req.body;
+    const { verified, content } = req.body;
+    const userId = verified.userId;
 
     // Check for valid parameters
     if (!postId || !userId || !content) {
@@ -36,7 +41,7 @@ export const createComment = async (req: Request, res: Response) => {
 
     // Increment post comment count
     post.commentsCount = post.commentsCount + 1
-    post.save()
+    await post.save()
 
     return sendResponse({
       res: res,
@@ -45,12 +50,7 @@ export const createComment = async (req: Request, res: Response) => {
       statusCode: 201
     })
   } catch (error) {
-    console.error(error);
-    return sendResponse({
-      res: res,
-      message: 'Internal server error',
-      statusCode: 500
-    })
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 }
 
@@ -80,17 +80,18 @@ export const getComments = async (req: Request, res: Response) => {
     const commentLimit = Number.parseInt(limit as string, 10) || 10
     const comments = await CommentService.getComments(postId, pageNumber, commentLimit);
 
-    return res.status(200).json({
+    res.status(200).json({
       message: 'Fetched comments successfully',
       data: comments
     });
+    const cacheKey = `comments:${postId}:${page}:${limit}`;
+
+
+    return cacheResponse(cacheKey,comments,res);
+
   } catch (error) {
     console.error('Failed to fetch comments:', error);
-    return sendResponse({
-      res: res,
-      message: 'Failed to fetch comment',
-      statusCode: 500
-    });
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 };
 
@@ -109,7 +110,8 @@ export const deleteComment = async (req: Request, res: Response) => {
     }
 
     // Find and delete the comment
-    const deletedComment = await CommentService.deleteComment(commentId)
+    const comment = await CommentService.getCommentById(commentId) as IComment;
+    const deletedComment = await CommentService.deleteComment(commentId).then()
 
     if (!deletedComment) {
       return sendResponse({
@@ -119,8 +121,10 @@ export const deleteComment = async (req: Request, res: Response) => {
       });
     }
 
-    // TODO Decrement post comment count
-
+    // Fetch post and decrement comment count
+    const post = await PostService.getPostById(comment.post.toString()) as IPost;
+    --post.commentsCount;
+    await post.save();
 
     return sendResponse({
       res: res,
@@ -129,10 +133,6 @@ export const deleteComment = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Failed to delete comment:', error);
-    return sendResponse({
-      res: res,
-      message: 'Failed to delete comment',
-      statusCode: 500
-    });
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 };

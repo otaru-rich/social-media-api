@@ -100,7 +100,7 @@ describe('Comment API', () => {
     const posts = await Post.getPostsByUserId(user._id.toString(), page, limit)
     const comments = await Comment.getComments(posts[0]._id as string, page, limit)
     const response = await request(app)
-      .delete(`/api/v1/posts/${comments[0]._id}/comments`)
+      .delete(`/api/v1/posts/${posts[0]._id}/comments/${comments[0]._id}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);

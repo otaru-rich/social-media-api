@@ -1,6 +1,6 @@
 import { type Response, type NextFunction, type Request } from 'express'
 import jwt from 'jsonwebtoken'
-import { UnauthorizedError, UserError } from '../utils/errorHandler'
+import {ServerErrorHandler, UnauthorizedError, UserError} from '../utils/errorHandler'
 import { Role } from '../types/type'
 
 // This should not be stored in .env on a live server
@@ -12,15 +12,21 @@ export const authorize = (...roles: Role[]) => {
     _: Response,
     next: NextFunction
   ) => {
-    await validateToken(req)
-    for (const role of roles) {
-      if (role === req.body.verified.role) {
-        return next();
+
+    try {
+      await validateToken(req)
+      for (const role of roles) {
+        if (role === req.body.verified.role) {
+          console.log('Passed  here:');
+
+          return next();
+        }
       }
+    } catch (error) {
+      ServerErrorHandler(new UnauthorizedError(
+          'Access denied. You cannot access this route'
+      ), req, _)
     }
-    throw new UnauthorizedError(
-      'Access denied. You cannot access this route'
-    )
   }
 }
 
@@ -39,6 +45,6 @@ export const validateToken = async (
     const jwtPayload = await jwt.verify(token, JWT_PRIVATE_KEY as string)
     req.body = {...req.body, verified: jwtPayload}
   } catch (error) {
-    return new UserError('Invalid token.')
+    throw new UserError('Invalid token.')
   }
 }

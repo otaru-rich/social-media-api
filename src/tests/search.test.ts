@@ -57,12 +57,12 @@ describe('Search API', () => {
     const response = await request(app)
       .get('/api/v1/posts/search')
       .set('Authorization', `Bearer ${token}`)
-      .query({ keyword: 'first', tags: ''});
+      .query({ keyword: 'st', tags: ''});
 
     expect(response.status).toBe(200);
     expect(response.body.data).toBeInstanceOf(Array);
-    expect(response.body.data[0]).toHaveProperty('title', 'First post');
-    expect(response.body.data[0]).toHaveProperty('content', 'This is the first post');
+    expect(response.body.data[0]).toHaveProperty('title', 'Third post');
+    expect(response.body.data[0]).toHaveProperty('content', 'This is the third post');
   });
 
   test('should search for posts based on content', async () => {
@@ -73,7 +73,7 @@ describe('Search API', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.data).toBeInstanceOf(Array);
-    expect(response.body.data[0]).toHaveProperty('title', 'First post');
+    expect(response.body.data[0]).toHaveProperty('title', 'Third post');
     expect(response.body.data[1]).toHaveProperty('title', 'Second post');
   });
 });

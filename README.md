@@ -97,12 +97,12 @@ To get started with the project API, follow these steps:
 
 3. Set up the environment variables:
 
-    - Create a `.env` file in the root directory of the project.
+    - Create a `.env` file in the root directory of the project. (`.env_example` file is provided)
     - Define the required environment variables in the `.env` file. For example:
 
       ```dotenv
       PORT=9000
-      DB_URI=mongodb://localhost:27017/project-db
+      DB_URI=mongodb://localhost:27017/social-media-api-db
       JWT_SECRET=mysecretkey
       ```
 

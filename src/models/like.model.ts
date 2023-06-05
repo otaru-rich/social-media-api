@@ -1,4 +1,4 @@
-import { Document, Schema, model, Model } from 'mongoose'
+import { Document, Schema, model, type Model } from 'mongoose'
 
 export interface Like extends Document {
   post: Schema.Types.ObjectId

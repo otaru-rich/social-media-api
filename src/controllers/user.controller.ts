@@ -2,8 +2,8 @@ import { type Request, type Response } from 'express'
 import { type IUser } from '../models/user.model'
 import * as UserService from '../services/user.service'
 import { sendResponse } from '../utils/response'
+import {ServerError, ServerErrorHandler} from "../utils/errorHandler";
 
-const { JWT_PRIVATE_KEY } = process.env
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -33,7 +33,7 @@ export const registerUser = async (req: Request, res: Response) => {
     res.status(201).json({ message: 'User registered successfully' })
   } catch (error) {
     console.error('Error during user registration:', error)
-    res.status(500).json({ message: 'An error occurred during user registration' })
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 }
 
@@ -67,6 +67,6 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(200).json({ token: token })
   } catch (error) {
     console.error('Error during user login:', error)
-    res.status(500).json({ message: 'An error occurred during user login' })
+    return ServerErrorHandler(new ServerError('Internal Server Error'), req, res);
   }
 }
