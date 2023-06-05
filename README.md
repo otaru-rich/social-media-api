@@ -8,7 +8,7 @@ This is the backend API for the social media platform. It provides endpoints for
 Before running the project API, make sure you have the following prerequisites installed on your system:
 
 - Node.js (version 18.16.0 or higher)
-- MongoDB (version 6.0.X or higher)
+- Docker (for MongoDB and Redis services)
 ## Project directory structure
 ```
 social-media-api/
@@ -60,7 +60,8 @@ social-media-api/
 ├── package.json
 ├── package-lock.json
 ├── .README.md
-├── social_media_api.postman_collection.json
+├── docs/
+│   ├── social_media_api.postman_collection.json
 └── tsconfig.json
 ```
 
