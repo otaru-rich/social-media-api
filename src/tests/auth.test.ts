@@ -18,6 +18,7 @@ describe('Auth API', () => {
 
     // Close the database connection
     await disconnectDB();
+
     await new Promise((resolve) => {
       server.close(resolve);
     });

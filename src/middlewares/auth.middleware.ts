@@ -17,8 +17,6 @@ export const authorize = (...roles: Role[]) => {
       await validateToken(req)
       for (const role of roles) {
         if (role === req.body.verified.role) {
-          console.log('Passed  here:');
-
           return next();
         }
       }

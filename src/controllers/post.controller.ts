@@ -139,8 +139,6 @@ export const getFollowingPosts = async (req: Request, res: Response) => {
     // Fetch posts from users that the authenticated user is following
     const following = await FollowService.getFollows({ userId: userId })
 
-    console.log("Following", following);
-
     const followingIds = following.map((follow) => follow.following.toString() )
 
     const pageNumber = Number.parseInt(page as string, 10) || 1

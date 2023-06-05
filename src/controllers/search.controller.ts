@@ -7,7 +7,6 @@ export const searchPosts = async (req: Request, res: Response) => {
   try {
     const { userId }  = req.body.verified;
     const { keyword, tags, page, limit }  = req.query
-    console.log('Searching  LOG:', keyword, tags, page, limit);
 
     // Check for valid payload
     if (!(keyword || tags)) {
